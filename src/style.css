@@ -17,9 +17,8 @@ html {
 
 .with-bg {
   background-image: url('/bg.svg');
-  background-size: cover;
+  background-size: contain;
   background-position: center;
-  background-repeat: no-repeat;
 }
 
 .tags {
@@ -106,4 +105,9 @@ html {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+}
+.image-frame{
+  background-image: url('/blockplanes.svg');
+  background-size: cover;
+  background-position: center;
 }

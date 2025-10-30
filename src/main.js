@@ -247,3 +247,86 @@ if (document.readyState === 'loading') {
 } else {
   initSmoothAnchors();
 }
+
+// Sticky section swap: slide images and crossfade texts (index.html 194-211)
+function initHistoryStickySwap() {
+  // Locate the sticky section containing the two specific images
+  const stickySections = Array.from(document.querySelectorAll('section.sticky'));
+  const sticky = stickySections.find((s) => s.querySelector('img[src="/block.png"]') && s.querySelector('img[src="/block-1.png"]'));
+  if (!sticky) return;
+
+  const container = sticky.parentElement; // tall wrapper controlling scroll range
+  if (!container) return;
+
+  const imgFirst = sticky.querySelector('img[src="/block.png"]');
+  const imgSecond = sticky.querySelector('img[src="/block-1.png"]');
+  if (!imgFirst || !imgSecond) return;
+
+  // Ensure images are stacked on top of each other for sliding
+  const imgWrapper = imgFirst.parentElement;
+  if (imgWrapper && imgWrapper.style) {
+    if (getComputedStyle(imgWrapper).position === 'static') {
+      imgWrapper.style.position = 'relative';
+    }
+  }
+  [imgFirst, imgSecond].forEach((img) => {
+    img.style.position = 'absolute';
+    img.style.top = '0';
+    img.style.left = '0';
+    img.style.willChange = 'transform';
+  });
+
+  // Texts: take the first two <p> elements inside the black tile (or just first two in sticky)
+  let textFirst = sticky.querySelector('#appears-first');
+  let textSecond = sticky.querySelector('#appears-second');
+  if (!textFirst || !textSecond) {
+    const ps = sticky.querySelectorAll('div.bg-black p, p');
+    if (ps.length >= 2) {
+      textFirst = textFirst || ps[0];
+      textSecond = textSecond || ps[1];
+    }
+  }
+
+  if (textFirst && textSecond) {
+    textFirst.style.willChange = 'opacity';
+    textSecond.style.willChange = 'opacity';
+    // initial state
+    if (!textFirst.style.opacity) textFirst.style.opacity = '1';
+    if (!textSecond.style.opacity) textSecond.style.opacity = '0';
+  }
+
+  function clamp01(v) { return Math.max(0, Math.min(1, v)); }
+
+  function update() {
+    // Progress of sticky through its parent container: 0 at start, 1 at end
+    const rect = container.getBoundingClientRect();
+    const viewportH = window.innerHeight;
+    const totalScrollable = Math.max(1, rect.height - viewportH);
+    const scrolled = clamp01((-rect.top) / totalScrollable);
+    const p = scrolled; // 0..1
+
+    // Images: first slides left to -100%, second from +100% to 0%
+    const firstX = -100 * p;
+    const secondX = 100 * (1 - p);
+    imgFirst.style.transform = `translate3d(${firstX}%, 0, 0)`;
+    imgSecond.style.transform = `translate3d(${secondX}%, 0, 0)`;
+
+    // Texts: crossfade if present
+    if (textFirst && textSecond) {
+      textFirst.style.opacity = String(1 - p);
+      textSecond.style.opacity = String(p);
+    }
+  }
+
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  window.addEventListener('orientationchange', update);
+  document.addEventListener('DOMContentLoaded', update);
+  update();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initHistoryStickySwap);
+} else {
+  initHistoryStickySwap();
+}
