@@ -1,0 +1,109 @@
+@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@200..900&display=swap');
+@import "tailwindcss";
+
+:root {
+  font-family: 'Unbounded', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1;
+  font-weight: 400;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.with-bg {
+  background-image: url('/bg.svg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.tags {
+  backdrop-filter: blur(20px);
+}
+
+.check:is(.active) {
+  &.blue-check {
+    .box {
+      background-color: #017CFF;
+    }
+  }
+
+  &.red-check {
+    .box {
+      background-color: #FF10B7;
+    }
+  }
+
+  &.yellow-check {
+    .box {
+      background-color: #FF9F32;
+    }
+  }
+
+  &.green-check {
+    .box {
+      background-color: #10FF9F;
+    }
+  }
+}
+
+.check-bg{
+  background-image: url('/checkBG.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.tags:nth-of-type(1){
+  animation: tags-animation-1 5s ease-in-out infinite;
+}
+@keyframes tags-animation-1 {
+  0% {
+    transform: rotate(0);
+  }
+  50% {
+    transform: rotate(3deg);
+  }
+  100% {
+    transform: rotate(0);
+  }
+}
+.tags:nth-of-type(2){
+  animation: tags-animation 5s ease-in-out infinite;
+}
+@keyframes tags-animation {
+  0% {
+    transform: rotate(0);
+  }
+  50% {
+    transform: rotate(-3deg);
+  }
+  100% {
+    transform: rotate(0);
+  }
+}
+.rotation{
+  animation: rotation-animation 5s ease-in-out infinite;
+}
+@keyframes rotation-animation {
+  0% {
+    transform: rotate(0);
+  }
+  50% {
+    transform: rotate(-5deg);
+  }
+  100% {
+    transform: rotate(0);
+  }
+}
+.star-button{
+  background-image: url('/starButton.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
